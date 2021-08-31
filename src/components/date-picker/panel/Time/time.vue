@@ -103,14 +103,15 @@
                     return disabled;
                 } else {
                     const slots = [24, 60, 60];
-                    const disabled = ['Hours', 'Minutes', 'Seconds'].map(type => this[`disabled${type}`]);
+                    const disabledItems = ['Hours', 'Minutes', 'Seconds']
+                    const disabled = disabledItems.map(() => []);
                     const disabledHMS = disabled.map((preDisabled, j) => {
                         const slot = slots[j];
                         const toDisable = preDisabled;
                         for (let i = 0; i < slot; i+= (this.steps[j] || 1)){
                             const hms = this.timeSlots.map((slot, x) => x === j ? i : slot);
                             const testDateTime = mergeDateHMS(this.date, ...hms);
-                            if (this.disabledDate(testDateTime, true)) toDisable.push(i);
+                            if (this.disabledDate(testDateTime, true, disabledItems[j])) toDisable.push(i);
                         }
                         return toDisable.filter(unique);
                     });
