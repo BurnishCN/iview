@@ -79,6 +79,9 @@
     import DateTable from '../../base/date-table.vue';
     import YearTable from '../../base/year-table.vue';
     import MonthTable from '../../base/month-table.vue';
+    import WeekTable from '../../base/week-table.vue';
+    import QuarterTable from '../../base/quarter-table.vue';
+
     import TimePicker from '../Time/time.vue';
     import Confirm from '../../base/confirm.vue';
     import datePanelLabel from './date-panel-label.vue';
@@ -95,7 +98,7 @@
     export default {
         name: 'DatePickerPanel',
         mixins: [ Mixin, Locale, DateMixin ],
-        components: { Icon, DateTable, YearTable, MonthTable, TimePicker, Confirm, datePanelLabel },
+        components: { Icon, DateTable, YearTable, MonthTable, TimePicker, Confirm, datePanelLabel, WeekTable, QuarterTable },
         props: {
             // more props in the mixin
             multiple: {
@@ -104,16 +107,17 @@
             }
         },
         data () {
+            // selectionMode就是原组件的type(非range集合)
             const {selectionMode, value} = this;
 
             const dates = value.slice().sort();
             return {
                 prefixCls: prefixCls,
                 datePrefixCls: datePrefixCls,
-                currentView: selectionMode || 'date',
-                pickerTable: this.getTableType(selectionMode),
-                dates: dates,
-                panelDate: this.startDate || dates[0] || new Date()
+                currentView: selectionMode || 'date',  // 类似selectionMode
+                pickerTable: this.getTableType(selectionMode), // selectionMode对应的组件
+                dates: dates, // 当前选择的值
+                panelDate: this.startDate || dates[0] || new Date() // 当前选择日期，默认为今天
             };
         },
         computed: {
@@ -132,7 +136,7 @@
                 const locale = this.t('i.locale');
                 const datePanelLabel = this.t('i.datepicker.datePanelLabel');
                 const date = this.panelDate;
-                const { labels, separator } = formatDateLabels(locale, datePanelLabel, date);
+                const { labels, separator } = formatDateLabels(locale, datePanelLabel, date, this.currentView);
 
                 const handler = type => {
                     return () => this.pickerTable = this.getTableType(type);
@@ -195,7 +199,7 @@
             },
             handlePreSelection(value){
                 this.panelDate = value;
-                if (this.pickerTable === 'year-table') this.pickerTable = 'month-table';
+                if (this.pickerTable === 'year-table' && (this.selectionMode === 'date' || this.selectionMode === 'week')) this.pickerTable = 'month-table';
                 else this.pickerTable = this.getTableType(this.currentView);
 
             },
@@ -203,7 +207,17 @@
                 const {selectionMode, panelDate} = this;
                 if (selectionMode === 'year') value = new Date(value.getFullYear(), 0, 1);
                 else if (selectionMode === 'month') value = new Date(panelDate.getFullYear(), value.getMonth(), 1);
-                else value = new Date(value);
+                else if (selectionMode === 'quarter'){
+                    const tempVal = value
+                    value = new Date(panelDate.getFullYear(), value.getMonth(), 1);
+                    value.quarter = tempVal.quarter
+                    value.yearQuarter = tempVal.yearQuarter
+                } else if (selectionMode === 'week'){
+                    const tempVal = value
+                    value = new Date(panelDate.getFullYear(), value.getMonth(), value.getDate());
+                    value.week = tempVal.week
+                    value.yearWeek = tempVal.yearWeek
+                } else value = new Date(value);
 
                 this.dates = [value];
                 this.$emit('on-pick', value, false, type || selectionMode);

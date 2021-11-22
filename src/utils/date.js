@@ -8,7 +8,7 @@
      * @class fecha
      */
     var fecha = {};
-    var token = /d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
+    var token = /d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDmWwQq])\1?|[aA]|"[^"]*"|'[^']*'/g;
     var twoDigits = /\d\d?/;
     var threeDigits = /\d{3}/;
     var fourDigits = /\d{4}/;
@@ -42,10 +42,57 @@
         return val;
     }
 
+    /**
+     * 获取日期对象是第几周
+     * @param { Date } dateObj
+     * @returns
+     */
+    function getWeekOfDate(dateObj){
+        if (!dateObj) return
+
+        //如果不是当年的第一天不是星期一，则该日所属周数为上一年的最后一周
+        var day = new Date(dateObj);
+
+        if(day.getDay() !== 1){
+            day = day.getTime()-24*60*60*1000
+            day = new Date(day);
+        }
+        day.setMonth(0);
+        day.setDate(1);
+        day.setHours(0);
+        day.setMinutes(0);
+        day.setSeconds(0);//到这里就得到该年的一月一日
+
+        const today=new Date(dateObj);
+        //计算日期是一年中的第几天
+        var rankDay = Math.ceil((today.getTime()-day.getTime())/(1000*24*60*60))
+
+        return Math.ceil(rankDay/7)
+    }
+
+    /**
+     * 根据周数获取日期：
+     * @param {*} w 周
+     * @param {*} y 年
+     * @returns
+     */
+    function getDateOfISOWeek(w, y = new Date().getFullYear()) {
+        var simple = new Date(y, 0, 1 + (w - 1) * 7);
+        var dow = simple.getDay();
+        var ISOweekStart = simple;
+        if (dow <= 4)
+            ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+        else
+            ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+
+        return ISOweekStart;
+    }
+
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var monthNamesShort = shorten(monthNames, 3);
     var dayNamesShort = shorten(dayNames, 3);
+    fecha.getWeekOfDate = getWeekOfDate
     fecha.i18n = {
         dayNamesShort: dayNamesShort,
         dayNames: dayNames,
@@ -79,6 +126,12 @@
         dddd: function (dateObj, i18n) {
             return i18n.dayNames[dateObj.getDay()];
         },
+        w: function (dateObj) {
+            return 'W' + getWeekOfDate(dateObj)
+        },
+        W: function (dateObj) {
+            return 'W' + getWeekOfDate(dateObj)
+        },
         M: function (dateObj) {
             return dateObj.getMonth() + 1;
         },
@@ -90,6 +143,30 @@
         },
         MMMM: function (dateObj, i18n) {
             return i18n.monthNames[dateObj.getMonth()];
+        },
+        Q: function (dateObj) {
+            switch(Math.floor(dateObj.getMonth()/3)) {
+                case 0:
+                    return 'Q1'
+                case 1:
+                    return 'Q2'
+                case 2:
+                    return 'Q3'
+                default:
+                    return 'Q4'
+            }
+        },
+        q: function (dateObj) {
+            switch(Math.floor(dateObj.getMonth()/3)) {
+                case 0:
+                    return 'Q1'
+                case 1:
+                    return 'Q2'
+                case 2:
+                    return 'Q3'
+                default:
+                    return 'Q4'
+            }
         },
         yy: function (dateObj) {
             return String(dateObj.getFullYear()).substr(2);
@@ -193,7 +270,20 @@
                 minutes = +(parts[1] * 60) + parseInt(parts[2], 10);
                 d.timezoneOffset = parts[0] === '+' ? minutes : -minutes;
             }
-        }]
+        }],
+        q: [/[qQ]\d/, function (d, v) {
+            v = parseInt(v.match(/[qQ](\d)/)[1]) - 1
+
+            d.year = v * 3
+            d.day = 1
+        }],
+        w: [twoDigits, function (d, v) {
+            v = parseInt(v)
+
+            const date = getDateOfISOWeek(v, d.year)
+            d.day = date.getDay()
+            d.month = date.getMonth()
+        }],
     };
     parseFlags.DD = parseFlags.DD;
     parseFlags.dddd = parseFlags.ddd;
@@ -203,7 +293,8 @@
     parseFlags.MM = parseFlags.M;
     parseFlags.ss = parseFlags.s;
     parseFlags.A = parseFlags.a;
-
+    parseFlags.Q = parseFlags.q;
+    parseFlags.W = parseFlags.w;
 
     // Some common format strings
     fecha.masks = {

@@ -138,7 +138,9 @@ export const formatDateLabels = (function() {
 // Parsers and Formaters
 export const DEFAULT_FORMATS = {
     date: 'yyyy-MM-dd',
+    week: 'yyyy-W',
     month: 'yyyy-MM',
+    quarter: 'yyyy-Q',
     year: 'yyyy',
     datetime: 'yyyy-MM-dd HH:mm:ss',
     time: 'HH:mm:ss',
@@ -217,7 +219,15 @@ export const TYPE_VALUE_RESOLVER_MAP = {
         formatter: DATE_FORMATTER,
         parser: DATE_PARSER
     },
+    week: {
+        formatter: DATE_FORMATTER,
+        parser: DATE_PARSER
+    },
     month: {
+        formatter: DATE_FORMATTER,
+        parser: DATE_PARSER
+    },
+    quarter: {
         formatter: DATE_FORMATTER,
         parser: DATE_PARSER
     },

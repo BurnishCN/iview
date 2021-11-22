@@ -356,7 +356,7 @@
         methods: {
             onSelectionModeChange(type){
                 if (type.match(/^date/)) type = 'date';
-                this.selectionMode = oneOf(type, ['year', 'month', 'date', 'time']) && type;
+                this.selectionMode = oneOf(type, ['year', 'quarter', 'month', 'week', 'date', 'time']) && type;
                 return this.selectionMode;
             },
             // 开启 transfer 时，点击 Drop 即会关闭，这里不让其关闭
@@ -670,6 +670,7 @@
                     this.dispatch('FormItem', 'on-form-change', this.publicStringValue);
                 });
             },
+            // 日期字符串解析为日期类型：如果val是字符串，则转换为对应的日期类型；否则直接返回
             parseDate(val) {
                 const isRange = this.type.includes('range');
                 const type = this.type;

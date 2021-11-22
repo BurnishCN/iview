@@ -16,7 +16,7 @@ export default {
         selectionMode: {
             type: String,
             validator (value) {
-                return oneOf(value, ['year', 'month', 'date', 'time']);
+                return oneOf(value, ['year',  'quarter', 'month', 'week', 'date', 'time']);
             },
             default: 'date'
         },

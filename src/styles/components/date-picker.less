@@ -54,7 +54,7 @@
                 box-shadow: 0 0 0 1px @primary-color inset;
             }
         }
-        
+
         &-cell{
             span&{
                 width: 28px;
@@ -145,7 +145,7 @@
         width: @date-picker-cells-width-with-weeknumbers;
     }
 
-    &-cells-year,&-cells-month{
+    &-cells-year,&-cells-month, &-cells-quarter{
         margin-top: 14px;
         span{
             width: 40px;
@@ -165,6 +165,37 @@
             background-color: tint(@primary-color, 80%);
         }
 
+    }
+    &-cells-quarter{
+        span{
+            width: 30px!important;
+            margin: 10px 8px!important;
+
+            em{
+                width: 30px!important;
+            }
+            &:last-of-type{
+                margin-right: 0;
+            }
+        }
+    }
+    &-cells-week {
+        ul{
+            list-style: none;
+        }
+        li:hover {
+            background: @date-picker-cell-hover-bg;
+            color: @text-color;
+        }
+        &-row-selected{
+            background: @primary-color;
+            color: #fff;
+        }
+        span{
+            em {
+                background: transparent!important;
+            }
+        }
     }
 
     &-header{

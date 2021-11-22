@@ -44,6 +44,14 @@ export default {
             if (cell.disabled || cell.type === 'weekLabel') return;
             const newDate = new Date(clearHours(cell.date));
 
+            if (this.selectionMode === 'quarter') {
+                newDate.quarter = cell.quarter
+                newDate.yearQuarter = `${ cell.year }-${ cell.quarter }`
+            } else if (this.selectionMode === 'week') {
+                newDate.week = cell.week
+                newDate.yearWeek = `${ cell.year }-${ cell.week }`
+            }
+
             this.$emit('on-pick', newDate);
             this.$emit('on-pick-click');
         },
