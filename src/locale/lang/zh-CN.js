@@ -37,15 +37,15 @@ const lang = {
             month11: '11 月',
             month12: '12 月',
             year: '年',
-            weekStartDay: '0',
+            weekStartDay: '1',
             weeks: {
-                sun: '日',
                 mon: '一',
                 tue: '二',
                 wed: '三',
                 thu: '四',
                 fri: '五',
-                sat: '六'
+                sat: '六',
+                sun: '日'
             },
             months: {
                 m1: '1月',

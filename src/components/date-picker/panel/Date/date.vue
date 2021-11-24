@@ -218,6 +218,7 @@
                     value.week = tempVal.week
                     value.yearWeek = tempVal.yearWeek
                 } else value = new Date(value);
+                console.log(value)
 
                 this.dates = [value];
                 this.$emit('on-pick', value, false, type || selectionMode);

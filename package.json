@@ -1,6 +1,6 @@
 {
     "name": "iview",
-    "version": "3.5.7",
+    "version": "3.5.8",
     "title": "iView",
     "description": "A high quality UI components Library with Vue.js",
     "homepage": "http://iview.talkingdata.com",
@@ -48,6 +48,7 @@
         "element-resize-detector": "^1.2.0",
         "js-calendar": "^1.2.3",
         "lodash.throttle": "^4.1.1",
+        "moment": "^2.29.1",
         "popper.js": "^1.14.6",
         "tinycolor2": "^1.4.1",
         "v-click-outside-x": "^4.0.19"

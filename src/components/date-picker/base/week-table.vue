@@ -25,6 +25,7 @@
     </div>
 </template>
 <script>
+    import moment from 'moment';
     import { clearHours, isInRange } from '../util';
     import dateUtil from '../../../utils/date'
     import Locale from '../../../mixins/locale';
@@ -102,7 +103,7 @@
                     const weekDates = cells.slice(i * weekDateSize, i * weekDateSize + weekDateSize)
                     const weekDate = {
                         ...weekDates[0],
-                        date: weekDates[weekDateSize-1].date,
+                        date: weekDates[1].date,
                         type: 'week',
                         year: tableYear,
                         dates: weekDates
@@ -128,11 +129,12 @@
                 ];
             },
             getRowCls (cell) {
+                const isActiveWeek = moment(this.value[0]).format('yyyy-W') == `${ cell.year }-${ cell.week }`
                 return [
                     `${prefixCls}-row`,
                     {
                         [`${prefixCls}-cell-disabled`]: cell.disabled,
-                        [`${prefixCls}-week-row-selected`]: dateUtil.getWeekOfDate(this.value ? this.value[0] : null) === cell.week
+                        [`${prefixCls}-week-row-selected`]: isActiveWeek
                     }
                 ];
             },

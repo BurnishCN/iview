@@ -37,7 +37,7 @@ const lang = {
             month11: 'November',
             month12: 'December',
             year: 'Year',
-            weekStartDay: '0',
+            weekStartDay: '1',
             weeks: {
                 sun: 'Sun',
                 mon: 'Mon',

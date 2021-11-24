@@ -1,5 +1,7 @@
 /*eslint-disable*/
 // 把 YYYY-MM-DD 改成了 yyyy-MM-dd
+import moment from "moment";
+
 (function (main) {
     'use strict';
 
@@ -50,49 +52,13 @@
     function getWeekOfDate(dateObj){
         if (!dateObj) return
 
-        //如果不是当年的第一天不是星期一，则该日所属周数为上一年的最后一周
-        var day = new Date(dateObj);
-
-        if(day.getDay() !== 1){
-            day = day.getTime()-24*60*60*1000
-            day = new Date(day);
-        }
-        day.setMonth(0);
-        day.setDate(1);
-        day.setHours(0);
-        day.setMinutes(0);
-        day.setSeconds(0);//到这里就得到该年的一月一日
-
-        const today=new Date(dateObj);
-        //计算日期是一年中的第几天
-        var rankDay = Math.ceil((today.getTime()-day.getTime())/(1000*24*60*60))
-
-        return Math.ceil(rankDay/7)
-    }
-
-    /**
-     * 根据周数获取日期：
-     * @param {*} w 周
-     * @param {*} y 年
-     * @returns
-     */
-    function getDateOfISOWeek(w, y = new Date().getFullYear()) {
-        var simple = new Date(y, 0, 1 + (w - 1) * 7);
-        var dow = simple.getDay();
-        var ISOweekStart = simple;
-        if (dow <= 4)
-            ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
-        else
-            ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
-
-        return ISOweekStart;
+        return moment(dateObj).isoWeek()
     }
 
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var monthNamesShort = shorten(monthNames, 3);
     var dayNamesShort = shorten(dayNames, 3);
-    fecha.getWeekOfDate = getWeekOfDate
     fecha.i18n = {
         dayNamesShort: dayNamesShort,
         dayNames: dayNames,
@@ -277,10 +243,10 @@
             d.year = v * 3
             d.day = 1
         }],
-        w: [twoDigits, function (d, v) {
+        w: [twoDigits, function (d, w) {
             v = parseInt(v)
 
-            const date = getDateOfISOWeek(v, d.year)
+            const date = moment(`${d.year}-${w}`, 'yyyy-W').toDate()
             d.day = date.getDay()
             d.month = date.getMonth()
         }],
