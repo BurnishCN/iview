@@ -36417,13 +36417,23 @@ var _util = __webpack_require__(15);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var prefixCls = 'ivu-picker-panel';
-var datePrefixCls = 'ivu-date-picker';
+var prefixCls = "ivu-picker-panel";
+var datePrefixCls = "ivu-date-picker";
 
 exports.default = {
-    name: 'DatePickerPanel',
+    name: "DatePickerPanel",
     mixins: [_panelMixin2.default, _locale2.default, _datePanelMixin2.default],
-    components: { Icon: _icon2.default, DateTable: _dateTable2.default, YearTable: _yearTable2.default, MonthTable: _monthTable2.default, TimePicker: _time2.default, Confirm: _confirm2.default, datePanelLabel: _datePanelLabel2.default, WeekTable: _weekTable2.default, QuarterTable: _quarterTable2.default },
+    components: {
+        Icon: _icon2.default,
+        DateTable: _dateTable2.default,
+        YearTable: _yearTable2.default,
+        MonthTable: _monthTable2.default,
+        TimePicker: _time2.default,
+        Confirm: _confirm2.default,
+        datePanelLabel: _datePanelLabel2.default,
+        WeekTable: _weekTable2.default,
+        QuarterTable: _quarterTable2.default
+    },
     props: {
         multiple: {
             type: Boolean,
@@ -36439,7 +36449,7 @@ exports.default = {
         return {
             prefixCls: prefixCls,
             datePrefixCls: datePrefixCls,
-            currentView: selectionMode || 'date',
+            currentView: selectionMode || "date",
             pickerTable: this.getTableType(selectionMode),
             dates: dates,
             panelDate: this.startDate || dates[0] || new Date() };
@@ -36447,16 +36457,16 @@ exports.default = {
 
     computed: {
         classes: function classes() {
-            return [prefixCls + '-body-wrapper', (0, _defineProperty3.default)({}, prefixCls + '-with-sidebar', this.shortcuts.length)];
+            return [prefixCls + "-body-wrapper", (0, _defineProperty3.default)({}, prefixCls + "-with-sidebar", this.shortcuts.length)];
         },
         panelPickerHandlers: function panelPickerHandlers() {
-            return this.pickerTable === String(this.currentView) + '-table' ? this.handlePick : this.handlePreSelection;
+            return this.pickerTable === String(this.currentView) + "-table" ? this.handlePick : this.handlePreSelection;
         },
         datePanelLabel: function datePanelLabel() {
             var _this = this;
 
-            var locale = this.t('i.locale');
-            var datePanelLabel = this.t('i.datepicker.datePanelLabel');
+            var locale = this.t("i.locale");
+            var datePanelLabel = this.t("i.datepicker.datePanelLabel");
             var date = this.panelDate;
 
             var _formatDateLabels = (0, _util.formatDateLabels)(locale, datePanelLabel, date, this.currentView),
@@ -36493,9 +36503,9 @@ exports.default = {
         currentView: function currentView(_currentView) {
             var _this2 = this;
 
-            this.$emit('on-selection-mode-change', _currentView);
+            this.$emit("on-selection-mode-change", _currentView);
 
-            if (this.currentView === 'time') {
+            if (this.currentView === "time") {
                 this.$nextTick(function () {
                     (0, _newArrowCheck3.default)(this, _this2);
 
@@ -36522,41 +36532,40 @@ exports.default = {
             this.pickerTable = this.getTableType(this.currentView);
         },
         changeYear: function changeYear(dir) {
-            if (this.selectionMode === 'year' || this.pickerTable === 'year-table') {
+            if (this.selectionMode === "year" || this.pickerTable === "year-table") {
                 this.panelDate = new Date(this.panelDate.getFullYear() + dir * 10, 0, 1);
             } else {
                 this.panelDate = (0, _util.siblingMonth)(this.panelDate, dir * 12);
             }
         },
         getTableType: function getTableType(currentView) {
-            return currentView.match(/^time/) ? 'time-picker' : String(currentView) + '-table';
+            return currentView.match(/^time/) ? "time-picker" : String(currentView) + "-table";
         },
         changeMonth: function changeMonth(dir) {
             this.panelDate = (0, _util.siblingMonth)(this.panelDate, dir);
         },
         handlePreSelection: function handlePreSelection(value) {
             this.panelDate = value;
-            if (this.pickerTable === 'year-table' && (this.selectionMode === 'date' || this.selectionMode === 'week')) this.pickerTable = 'month-table';else this.pickerTable = this.getTableType(this.currentView);
+            if (this.pickerTable === "year-table" && (this.selectionMode === "date" || this.selectionMode === "week")) this.pickerTable = "month-table";else this.pickerTable = this.getTableType(this.currentView);
         },
         handlePick: function handlePick(value, type) {
             var selectionMode = this.selectionMode,
                 panelDate = this.panelDate;
 
-            if (selectionMode === 'year') value = new Date(value.getFullYear(), 0, 1);else if (selectionMode === 'month') value = new Date(panelDate.getFullYear(), value.getMonth(), 1);else if (selectionMode === 'quarter') {
+            if (selectionMode === "year") value = new Date(value.getFullYear(), 0, 1);else if (selectionMode === "month") value = new Date(panelDate.getFullYear(), value.getMonth(), 1);else if (selectionMode === "quarter") {
                 var tempVal = value;
                 value = new Date(panelDate.getFullYear(), value.getMonth(), 1);
                 value.quarter = tempVal.quarter;
                 value.yearQuarter = tempVal.yearQuarter;
-            } else if (selectionMode === 'week') {
+            } else if (selectionMode === "week") {
                 var _tempVal = value;
                 value = new Date(panelDate.getFullYear(), value.getMonth(), value.getDate());
                 value.week = _tempVal.week;
                 value.yearWeek = _tempVal.yearWeek;
             } else value = new Date(value);
-            console.log(value);
 
             this.dates = [value];
-            this.$emit('on-pick', value, false, type || selectionMode);
+            this.$emit("on-pick", value, false, type || selectionMode);
         }
     }
 };
@@ -50537,7 +50546,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 var API = (0, _extends3.default)({
-    version: '3.5.8',
+    version: '3.5.9',
     locale: _index2.default.use,
     i18n: _index2.default.i18n,
     install: install,
@@ -54862,8 +54871,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_date_vue__ = __webpack_require__(286);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_date_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_date_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_date_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_date_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_35ab1bcf_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__ = __webpack_require__(553);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_35ab1bcf_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_35ab1bcf_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_0dee56d0_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__ = __webpack_require__(553);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_0dee56d0_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_0dee56d0_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
 /* script */
 
@@ -54881,8 +54890,8 @@ var __vue_module_identifier__ = null
 
 var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_date_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_35ab1bcf_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__["render"],
-  __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_35ab1bcf_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__["staticRenderFns"],
+  __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_0dee56d0_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__["render"],
+  __WEBPACK_IMPORTED_MODULE_1__babel_loader_sourceMap_node_modules_vue_loader_lib_template_compiler_index_id_data_v_0dee56d0_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_date_vue__["staticRenderFns"],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -55470,11 +55479,11 @@ var render = function render() {
         } } }, [_vm._v(_vm._s(shortcut.text))]);
   }), 0) : _vm._e(), _vm._v(" "), _c('div', { class: [_vm.prefixCls + '-body'] }, [_c('div', { directives: [{ name: "show", rawName: "v-show", value: _vm.currentView !== 'time', expression: "currentView !== 'time'" }], class: [_vm.datePrefixCls + '-header'] }, [_c('span', { class: _vm.iconBtnCls('prev', '-double'), on: { "click": function click($event) {
         return _vm.changeYear(-1);
-      } } }, [_c('Icon', { attrs: { "type": "ios-arrow-back" } })], 1), _vm._v(" "), _vm.pickerTable === 'date-table' ? _c('span', { directives: [{ name: "show", rawName: "v-show", value: _vm.currentView === 'date', expression: "currentView === 'date'" }], class: _vm.iconBtnCls('prev'), on: { "click": function click($event) {
+      } } }, [_c('Icon', { attrs: { "type": "ios-arrow-back" } })], 1), _vm._v(" "), _vm.pickerTable === 'date-table' || _vm.pickerTable === 'week-table' ? _c('span', { directives: [{ name: "show", rawName: "v-show", value: _vm.currentView === 'date' || _vm.currentView === 'week', expression: "currentView === 'date' || currentView === 'week'" }], class: _vm.iconBtnCls('prev'), on: { "click": function click($event) {
         return _vm.changeMonth(-1);
       } } }, [_c('Icon', { attrs: { "type": "ios-arrow-back" } })], 1) : _vm._e(), _vm._v(" "), _c('date-panel-label', { attrs: { "date-panel-label": _vm.datePanelLabel, "current-view": _vm.pickerTable.split('-').shift(), "date-prefix-cls": _vm.datePrefixCls } }), _vm._v(" "), _c('span', { class: _vm.iconBtnCls('next', '-double'), on: { "click": function click($event) {
         return _vm.changeYear(+1);
-      } } }, [_c('Icon', { attrs: { "type": "ios-arrow-forward" } })], 1), _vm._v(" "), _vm.pickerTable === 'date-table' ? _c('span', { directives: [{ name: "show", rawName: "v-show", value: _vm.currentView === 'date', expression: "currentView === 'date'" }], class: _vm.iconBtnCls('next'), on: { "click": function click($event) {
+      } } }, [_c('Icon', { attrs: { "type": "ios-arrow-forward" } })], 1), _vm._v(" "), _vm.pickerTable === 'date-table' || _vm.pickerTable === 'week-table' ? _c('span', { directives: [{ name: "show", rawName: "v-show", value: _vm.currentView === 'date' || _vm.currentView === 'week', expression: "currentView === 'date' || currentView === 'week'" }], class: _vm.iconBtnCls('next'), on: { "click": function click($event) {
         return _vm.changeMonth(+1);
       } } }, [_c('Icon', { attrs: { "type": "ios-arrow-forward" } })], 1) : _vm._e()], 1), _vm._v(" "), _c('div', { class: [_vm.prefixCls + '-content'] }, [_vm.currentView !== 'time' ? _c(_vm.pickerTable, { ref: "pickerTable", tag: "component", attrs: { "table-date": _vm.panelDate, "show-week-numbers": _vm.showWeekNumbers, "value": _vm.dates, "selection-mode": _vm.selectionMode, "disabled-date": _vm.disabledDate, "focused-date": _vm.focusedDate }, on: { "on-pick": _vm.panelPickerHandlers, "on-pick-click": _vm.handlePickClick } }) : _vm._e()], 1), _vm._v(" "), _c('div', { directives: [{ name: "show", rawName: "v-show", value: _vm.isTime, expression: "isTime" }], class: [_vm.prefixCls + '-content'] }, [_vm.currentView === 'time' ? _c('time-picker', _vm._b({ ref: "timePicker", attrs: { "value": _vm.dates, "format": _vm.format, "time-disabled": _vm.timeDisabled, "disabled-date": _vm.disabledDate, "focused-date": _vm.focusedDate }, on: { "on-pick": _vm.handlePick, "on-pick-click": _vm.handlePickClick, "on-pick-clear": _vm.handlePickClear, "on-pick-success": _vm.handlePickSuccess, "on-pick-toggle-time": _vm.handleToggleTime } }, 'time-picker', _vm.timePickerOptions, false)) : _vm._e()], 1), _vm._v(" "), _vm.confirm ? _c('Confirm', { attrs: { "show-time": _vm.showTime, "is-time": _vm.isTime }, on: { "on-pick-toggle-time": _vm.handleToggleTime, "on-pick-clear": _vm.handlePickClear, "on-pick-success": _vm.handlePickSuccess } }) : _vm._e()], 1)]);
 };

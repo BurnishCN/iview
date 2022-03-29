@@ -251,10 +251,10 @@
     <div style="width: 500px;margin: 100px;">
         <p><input type="text"></p>
 
-        <DatePicker type="month" show-week-numbers placeholder="Select date" style="width: 200px"></DatePicker>
-        <DatePicker type="year" show-week-numbers placeholder="Select date" style="width: 200px"></DatePicker>
-        <DatePicker type="quarter" show-week-numbers placeholder="Select date" style="width: 200px"></DatePicker>
-        <DatePicker type="week" show-week-numbers placeholder="Select date" style="width: 200px"></DatePicker>
+        <DatePicker type="month" placeholder="Select date" style="width: 200px"></DatePicker>
+        <DatePicker type="year" placeholder="Select date" style="width: 200px"></DatePicker>
+        <DatePicker type="quarter"  placeholder="Select date" style="width: 200px"></DatePicker>
+        <DatePicker type="week"  placeholder="Select date" style="width: 200px"></DatePicker>
 
 
         <DatePicker type="date" transfer show-week-numbers placeholder="Select date" style="width: 400px"></DatePicker>
